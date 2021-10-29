@@ -78,8 +78,9 @@ def selectclass():
         print("选课失败！原因是人数已满！")
         return False
     if r.text.find('已选此课程') > -1:
-        print("选课失败！已选此课程！")
-        return False
+        print("选课失败！已选此课程！请登陆选课系统查看选课！")
+        print("为防止账号被风控，将停止自动选课。")
+        return True
     if r.text.find('选课失败') > -1:
         print("选课失败！其他未知原因错误，请自行进入选课系统查看！")
         return False
