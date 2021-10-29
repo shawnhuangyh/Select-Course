@@ -49,23 +49,31 @@ header = {'Host': 'xk.autoisp.shu.edu.cn',
 
 
 def queryclass():
-    r = requests.post(queryurl, data=formdata, headers=header)
-    # print(r.text)
-    if r.status_code != requests.codes.ok:
-        print('4XX or 5XX Error,check your Internet connection or you cookie')
-    soup = BeautifulSoup(r.text, 'lxml')
-    for each_course in soup.find_all('tr', attrs={'name': 'rowclass'}):
-        # all_tr_tag = each_course.find_all('tr')
-        all_td_tag = each_course.find_all('td', attrs={'style': 'text-align: center;'})
-        plan = all_td_tag[1].text
-        current = all_td_tag[2].text
-        print("当前：" + current + "人，计划：" + plan + "人")
-        if int(plan) > int(current):
-            print("有空余")
-            return True
-        else:
-            print("无空余")
+    idx = 1
+    while True:
+        r = requests.post(queryurl, data=formdata, headers=header)
+        # print(r.text)
+        if r.status_code != requests.codes.ok:
+            print('4XX or 5XX Error,check your Internet connection or you cookie')
             return False
+        soup = BeautifulSoup(r.text, 'lxml')
+        for each_course in soup.find_all('tr', attrs={'name': 'rowclass'}):
+            # all_tr_tag = each_course.find_all('tr')
+            all_td_tag = each_course.find_all('td', attrs={'style': 'text-align: center;'})
+            plan = all_td_tag[1].text
+            current = all_td_tag[2].text
+            print("第" + str(idx) + "次尝试：")
+            idx=idx+1
+            print("当前：" + current + "人，计划：" + plan + "人")
+            if int(plan) > int(current):
+                print("有空余")
+                return True
+            else:
+                print("无空余")
+                print("10秒后继续查询")
+                print("====================\n")
+                time.sleep(10)
+                continue
 
 
 def selectclass():
@@ -98,6 +106,3 @@ if __name__ == '__main__':
                 print("====================\n")
                 time.sleep(10)
                 continue
-        print("10秒后继续查询")
-        print("====================\n")
-        time.sleep(10)
