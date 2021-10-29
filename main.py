@@ -31,7 +31,7 @@ formdata = {'PageIndex': '1',
             }
 
 selectdata = {'cids': coursenumber,
-              'tnos': '1001'}
+              'tnos': teachernumber}
 
 header = {'Host': 'xk.autoisp.shu.edu.cn',
           'Proxy-Connection': 'keep-alive',
