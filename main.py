@@ -113,7 +113,8 @@ def selectclass():
 
 
 if __name__ == '__main__':
-    print("消息测试，请检查 Telegram 消息。")
+    if notify == 'true':
+        print("消息测试，请检查 Telegram 消息。")
     sendmessage("Telegram 消息发送成功！")
     while True:
         flag = queryclass()
