@@ -8,6 +8,8 @@ with open('config.json', encoding='utf-8') as f:
 coursenumber = config['coursenumber']
 teachernumber = config['teachernumber']
 cookie = config['cookie']
+notify = config['notify']
+tgbotkey = config['tgbotkey']
 
 queryurl = 'http://xk.autoisp.shu.edu.cn/StudentQuery/QueryCourseList'
 selecturl = 'http://xk.autoisp.shu.edu.cn/CourseSelectionStudent/CourseSelectionSave'
@@ -48,6 +50,18 @@ header = {'Host': 'xk.autoisp.shu.edu.cn',
           }
 
 
+def sendmessage(message):
+    if notify == 'true':
+        tg_bot_key, tg_chat_id = tgbotkey.split('@')
+        tgurl = 'https://api.telegram.org/bot%s/sendMessage' % tg_bot_key
+        data = {
+            'chat_id': tg_chat_id,
+            'text': message
+        }
+        r = requests.post(tgurl, data=data)
+        # print(r.text.find('ok'))
+
+
 def queryclass():
     idx = 1
     while True:
@@ -64,14 +78,14 @@ def queryclass():
             plan = all_td_tag[1].text
             current = all_td_tag[2].text
             print("第" + str(idx) + "次尝试：")
-            idx=idx+1
+            idx = idx + 1
             print("当前：" + current + "人，计划：" + plan + "人")
             if int(plan) > int(current):
-                print("有空余")
+                print("有空余，即将自动选课...")
                 return True
             else:
                 print("无空余")
-                print("10秒后继续查询")
+                print("10秒后继续查询课程人数...")
                 print("====================\n")
                 time.sleep(10)
                 continue
@@ -81,21 +95,26 @@ def selectclass():
     r = requests.post(selecturl, data=selectdata, headers=header)
     soup = BeautifulSoup(r.text, 'lxml')
     if r.text.find('选课成功') > -1:
-        print("选课成功！")
+        print("选课成功！程序将退出。")
+        sendmessage("选课成功！程序将退出。")
         return True
     if r.text.find('教学班人数已满！') > -1:
-        print("选课失败！原因是人数已满！")
+        print("选课失败！原因是人数已满！将继续监控该课程。")
+        sendmessage("选课失败！原因是人数已满！将继续监控该课程。")
         return False
     if r.text.find('已选此课程') > -1:
-        print("选课失败！已选此课程！请登陆选课系统查看选课！")
-        print("为防止账号被风控，将停止自动选课。")
+        print("选课失败！已选此课程！请登陆选课系统查看选课！\n为防止账号被风控，将停止停止监控该课程。")
+        sendmessage("选课失败！已选此课程！请登陆选课系统查看选课！\n为防止账号被风控，将停止监控该课程。")
         return True
     if r.text.find('选课失败') > -1:
-        print("选课失败！其他未知原因错误，请自行进入选课系统查看！")
+        print("选课失败！其他未知原因错误，请自行进入选课系统查看！将继续监控该课程。")
+        sendmessage("选课失败！其他未知原因错误，请自行进入选课系统查看！将继续监控该课程。")
         return False
 
 
 if __name__ == '__main__':
+    print("消息测试，请检查 Telegram 消息。")
+    sendmessage("Telegram 消息发送成功！")
     while True:
         flag = queryclass()
         if flag == True:
@@ -103,7 +122,7 @@ if __name__ == '__main__':
             if selectflag == True:
                 break
             if selectflag == False:
-                print("10秒后继续查询")
+                print("10秒后继续查询课程人数...")
                 print("====================\n")
                 time.sleep(10)
                 continue
