@@ -55,6 +55,7 @@ def queryclass():
         # print(r.text)
         if r.status_code != requests.codes.ok:
             print('4XX or 5XX Error,check your Internet connection or you cookie')
+            time.sleep(10)
             return False
         soup = BeautifulSoup(r.text, 'lxml')
         for each_course in soup.find_all('tr', attrs={'name': 'rowclass'}):
