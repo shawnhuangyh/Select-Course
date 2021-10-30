@@ -1,5 +1,8 @@
 {
   "coursenumber": "00864120",
   "teachernumber": "1001",
-  "cookie": ""
+  "cookie": "",
+  "notify": "false",
+  "tgbotkey": ""
+
 }
