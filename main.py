@@ -86,9 +86,9 @@ def queryclass():
                 return True
             else:
                 print("无空余")
-                print("10秒后继续查询课程人数...")
+                print("1秒后继续查询课程人数...")
                 print("====================\n")
-                time.sleep(10)
+                time.sleep(1)
                 continue
 
 
@@ -124,8 +124,8 @@ if __name__ == '__main__':
             if selectflag == True:
                 break
             if selectflag == False:
-                print("10秒后继续查询课程人数...")
+                print("1秒后继续查询课程人数...")
                 print("====================\n")
-                time.sleep(10)
+                time.sleep(1)
                 continue
         break
