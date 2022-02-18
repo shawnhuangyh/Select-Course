@@ -94,6 +94,7 @@ def encryptPass(password):
 def queryCourse(user, course, idx):
     r = requests.post(queryurl, headers=user.header, data=course.formdata)
     if r.status_code != requests.codes.ok:
+        print(r.text)
         print('4XX or 5XX Error, check your Internet connection or you cookie')
         return -1
     soup = BeautifulSoup(r.text, 'lxml')
@@ -109,8 +110,8 @@ def queryCourse(user, course, idx):
             return 1
         else:
             print("无空余")
-            print("1秒后继续查询课程人数...\n")
-            time.sleep(1)
+            print("5秒后继续查询课程人数...\n")
+            time.sleep(5)
             return 0
 
 
