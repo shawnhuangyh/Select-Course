@@ -40,5 +40,6 @@ The program will use course query to check the availability of the course. If th
 ## Todo
 
 - [x] Refactor the code
+- [ ] Store the login confidential automatically
 - [ ] Support query multiple courses at the same time
 - [ ] ...
