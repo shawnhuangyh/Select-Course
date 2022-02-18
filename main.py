@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 # URL
 base = 'http://xk.autoisp.shu.edu.cn'
 queryurl = base + '/StudentQuery/QueryCourseList'
+verifyurl = base + '/CourseSelectionStudent/VerifyDiffCampus'
 selecturl = base + '/CourseSelectionStudent/CourseSelectionSave'
 termurl = base + '/Home/TermSelect'
 termindex = base + '/Home/TermIndex'
@@ -74,8 +75,8 @@ class Course:
     def __init__(self, cid=None, tid=None):
         self.formdata['CID'] = cid
         self.formdata['TeachNo'] = tid
-        self.selectdata['CID'] = cid
-        self.selectdata['TeachNo'] = tid
+        self.selectdata['cids'] = cid
+        self.selectdata['tnos'] = tid
 
 
 def encryptPass(password):
@@ -94,7 +95,6 @@ def queryCourse(user, course, idx):
     r = requests.post(queryurl, headers=user.header, data=course.formdata)
     if r.status_code != requests.codes.ok:
         print('4XX or 5XX Error, check your Internet connection or you cookie')
-        time.sleep(10)
         return -1
     soup = BeautifulSoup(r.text, 'lxml')
     for each_course in soup.find_all('tr', attrs={'name': 'rowclass'}):
@@ -113,7 +113,9 @@ def queryCourse(user, course, idx):
             time.sleep(1)
             return 0
 
+
 def selectCourse(user, course):
+    requests.post(verifyurl, data=course.selectdata, headers=user.header)
     r = requests.post(selecturl, data=course.selectdata, headers=user.header)
     soup = BeautifulSoup(r.text, 'lxml')
     if r.text.find('选课成功') > -1:
@@ -130,8 +132,8 @@ def selectCourse(user, course):
         return 0
 
 
-
 if __name__ == '__main__':
+    # TODO:Add support for storing confidential and ask user whether to use last time confidential
     username = input("请输入学号：")
     password = input("请输入密码：")
     term = input("请输入学期：（如2021-2022学年春季学期请输入20213）")
@@ -152,6 +154,7 @@ if __name__ == '__main__':
             if selectStatus == 1 or selectStatus == -1:
                 break
             elif selectStatus == 0:
+                time.sleep(5)
                 continue
         if courseAvailable == -1:
             break
