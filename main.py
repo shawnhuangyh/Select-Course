@@ -152,10 +152,10 @@ if __name__ == '__main__':
         courseAvailable = queryCourse(user, course, idx)
         if courseAvailable == 1:
             selectStatus = selectCourse(user, course)
+            time.sleep(5)
             if selectStatus == 1 or selectStatus == -1:
                 break
             elif selectStatus == 0:
-                time.sleep(5)
                 continue
         if courseAvailable == -1:
             break
