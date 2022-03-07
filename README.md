@@ -1,4 +1,6 @@
 # Select Course
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fshawnhuangyh%2FSelectCourse.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fshawnhuangyh%2FSelectCourse?ref=badge_shield)
+
 
 ## Requirements 
 
@@ -43,3 +45,6 @@ The program will use course query to check the availability of the course. If th
 - [ ] Store the login confidential automatically
 - [ ] Support query multiple courses at the same time
 - [ ] ...
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fshawnhuangyh%2FSelectCourse.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fshawnhuangyh%2FSelectCourse?ref=badge_large)
